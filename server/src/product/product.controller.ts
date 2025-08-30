@@ -2,8 +2,8 @@ import {ApiResponse, ApiTags} from '@nestjs/swagger';
 import {Controller, Get, Query} from '@nestjs/common';
 import {ProductService} from "./product.service";
 import {GetProductDTO} from "./DTO/GetProductDTO";
-import {ProductDB} from "../../database/ProductDB";
 import {FilterDTO} from "./DTO/FilterDTO";
+import {transformProductDBtoGetProductDTO} from "../utils/utils";
 
 
 @ApiTags('product')
@@ -23,29 +23,19 @@ export class ProductController {
     async getProducts(
         @Query() query: FilterDTO,
     ): Promise<GetProductDTO[]> {
+        if (query.colors && !Array.isArray(query.colors)) {
+            query.colors = [query.colors];
+        }
+
+        if (query.categories && !Array.isArray(query.categories)) {
+            query.categories = [query.categories];
+        }
+
         const products = await this.productService.getProducts(query);
         return await Promise.all(
             products.map(async (product) => {
-                return this.transformProductDBtoGetProductDTO(product);
+                return transformProductDBtoGetProductDTO(product);
             }),
         );
-    }
-
-    /**
-     * Transforms a ProductDB object into a GetProductDTO.
-     * @returns {GetProductDTO} - The transformed product data transfer object.
-     * @param product - the product to be transformed
-     */
-    transformProductDBtoGetProductDTO(product: ProductDB): GetProductDTO {
-        const dto = new GetProductDTO();
-        dto.id = product.id;
-        dto.name = product.name;
-        dto.color = product.color;
-        dto.price = product.price;
-        dto.inventory = product.inventory;
-        dto.picture = product.picture;
-        dto.categories = product.categories?.map((c) => c.name) || [];
-
-        return dto;
     }
 }

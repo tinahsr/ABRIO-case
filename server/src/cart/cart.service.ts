@@ -24,7 +24,7 @@ export class CartService {
      */
     async getCart(): Promise<CartDB[]> {
         return await this.cartRepository.find({
-            relations: ['product'],
+            relations: ['product', 'product.categories'],
         });
     }
 
@@ -51,10 +51,10 @@ export class CartService {
         if (cartItem) {
             cartItem.count += count;
         } else {
-            cartItem = this.cartRepository.create({
-                product,
-                count,
-            });
+            cartItem = this.cartRepository.create();
+            cartItem.product = product;
+            cartItem.count = count;
+
         }
         await this.cartRepository.save(cartItem);
 
