@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {ProductDB} from "./ProductDB";
 
 @Entity()
@@ -6,9 +6,9 @@ export class CartDB {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
+    @ManyToOne(() => ProductDB, { eager: true })
     product: ProductDB;
 
     @Column()
-    number: number;
+    count: number;
 }

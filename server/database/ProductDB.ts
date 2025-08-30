@@ -1,5 +1,6 @@
-import {Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {CategoryDB} from "./CategoryDB";
+import {CartDB} from "./CartDB";
 
 @Entity()
 export class ProductDB {
@@ -28,4 +29,6 @@ export class ProductDB {
     @JoinTable({ name: 'ProductCategories' })
     categories: CategoryDB[];
 
+    @OneToMany(() => CartDB, item => item.product)
+    cartItems?: CartDB[];
 }
