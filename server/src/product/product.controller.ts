@@ -1,9 +1,11 @@
-import {ApiResponse, ApiTags} from '@nestjs/swagger';
-import {Controller, Get, Query} from '@nestjs/common';
+import {ApiParam, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {Controller, Get, Param, Query, Res} from '@nestjs/common';
 import {ProductService} from "./product.service";
 import {GetProductDTO} from "./DTO/GetProductDTO";
 import {FilterDTO} from "./DTO/FilterDTO";
 import {transformProductDBtoGetProductDTO} from "../utils/utils";
+import {join} from "path";
+import express from 'express';
 
 
 @ApiTags('product')
@@ -37,5 +39,38 @@ export class ProductController {
                 return transformProductDBtoGetProductDTO(product);
             }),
         );
+    }
+
+
+    @ApiResponse({
+        status: 200,
+        description: 'Successfully fetched the product picture',
+        content: {
+            'image/png': {
+                example: 'Product picture image file',
+            },
+            'image/jpeg': {
+                example: 'Product picture image file',
+            },
+        },
+    })
+    @ApiResponse({
+        status: 404,
+        description: 'Product picture not found',
+    })
+    @ApiParam({
+        name: 'image',
+        description: 'The filename of the product picture to fetch',
+        example: 'productPicture123.png',
+    })
+    @Get('productPicture/:image')
+    async getProductPicture(@Param('image') image: string, @Res() res: express.Response) {
+        const imgPath: string = join(
+            process.cwd(),
+            'uploads',
+            'productPictures',
+            image,
+        );
+        res.sendFile(imgPath);
     }
 }
