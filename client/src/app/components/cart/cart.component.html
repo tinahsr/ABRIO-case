@@ -1,17 +1,83 @@
+@if (cartItems$ | async; as items) {
+  @if (items.length > 0) {
 <div class="sticky-bottom cart">
   <hr class="line m-1">
-<h2 class="ms-4">WARENKORB</h2>
+
+
+  <div class="d-flex row justify-content-between align-items-center ms-4 me-3">
+    <h2 class="col-4 p-0 m-0">WARENKORB</h2>
+    <button type="button" class="btn btn-primary col" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5m-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5"/>
+      </svg>
+    </button>
+    <div class="col-4"></div>
+  </div>
+
+
   <div class="row ms-3 me-3">
+
     <div class="col-8">
-      <p class="mb-1">Produkt A × 2</p>
-      <p class="mb-1">Produkt B × 1</p>
-      <p class="mb-1">Produkt C × 3</p>
+      @for (item of items.slice(0, 3); track $index) {
+        <p class="mb-1"> {{ item.product.name }} × {{ item.count }}</p>
+      }
     </div>
 
     <div class="col-4 text-end">
       <h5>Summe</h5>
-      <p>€ 123,45</p>
+      <p> {{ total$ | async | number:'1.2-2' }} €</p>
     </div>
   </div>
+</div>
+}
+}
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>WARENKORB</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Produkt</th>
+            <th scope="col">Anzahl</th>
+            <th scope="col">Preis</th>
+          </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            @if (cartItems$ | async; as items) {
+            @for (item of items; track $index) {
+              <tr>
+                <th scope="row">{{ item.product.name }}</th>
+                <td>
+                  <input
+                    type="number"
+                    name="quantity-{{item.id}}"
+                    min="1"
+                    [(ngModel)]="item.count"
+                    class="form-control"
+                    (ngModelChange)="updateItemCount(item, $event)"
+                  />
+                </td>
+                <td>{{ (item.count * item.product.price) | number:'1.2-2' }} €</td>
+                <td><button type="button" class="btn" (click)="removeFromCart(item.id)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                </svg>
+                </button>
+                </td>
+              </tr>
+            }
+            }
+          </tbody>
+        </table>
+        <h2 class="text-end me-5 mt-5">Summe: {{ total$ | async | number:'1.2-2' }} €</h2>
+      </div>
+    </div>
+  </div>
 </div>

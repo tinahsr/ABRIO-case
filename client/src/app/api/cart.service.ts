@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {catchError, map, Observable, tap, throwError} from 'rxjs';
 import {ApiConfigService} from './api-config.service';
 import {GetProductDTO} from './product.service';
 
@@ -28,11 +28,12 @@ export class CartService {
   private readonly apiUrl: string;
 
   constructor(private http: HttpClient, config: ApiConfigService) {
-    this.apiUrl = `${config.getBaseUrl()}/product`;
+    this.apiUrl = `${config.getBaseUrl()}/cart`;
   }
 
   getCart(): Observable<GetCartDTO[]> {
     return this.http.get<GetCartDTO[]>(`${this.apiUrl}/all`);
+
   }
 
   addToCart(body: EditCartDTO): Observable<OkDTO> {
@@ -44,6 +45,16 @@ export class CartService {
   }
 
   deleteCartItem(cartItemId: string): Observable<OkDTO> {
-    return this.http.delete<OkDTO>(`${this.apiUrl}/${cartItemId}`);
+    return this.http.delete<OkDTO>(`${this.apiUrl}/${cartItemId}`).pipe(
+      tap(response => console.log('Deleted:', response)),
+      catchError(err => {
+        console.error('Delete failed', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  getTotalPrice(cartItems: GetCartDTO[]): number {
+    return cartItems.reduce((sum, item) => sum + item.product.price * item.count, 0);
   }
 }

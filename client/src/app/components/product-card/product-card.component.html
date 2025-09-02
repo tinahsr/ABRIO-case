@@ -13,6 +13,6 @@
   </ul>
   <div class="card-body py-1 d-flex row px-0 mx-0">
     <div class="border-0 py-1 col px-1"> {{ product.price }} €</div>
-    <button type="button" class="button-cards rounded-0 d-flex justify-content-end col-6">in den Warenkorb</button>
+    <button type="button" class="button-cards rounded-0 d-flex justify-content-end col-6"  (click)="addToCart(product)">in den Warenkorb</button>
   </div>
 </div>

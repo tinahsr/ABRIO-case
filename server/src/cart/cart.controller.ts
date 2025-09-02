@@ -51,7 +51,12 @@ export class CartController {
     async updateCart(
         @Body() body: EditCartDTO
     ) {
-        await this.cartService.updateCartItem(body.productId, body.count);
+        if (body.count == 0) {
+            await this.cartService.removeCartItem(body.productId);
+        } else {
+            await this.cartService.updateCartItem(body.productId, body.count);
+
+        }
         return new OkDTO(true, 'Item amout was updated');
     }
 
@@ -62,7 +67,7 @@ export class CartController {
     })
     @HttpCode(HttpStatus.OK)
     @Delete('/:cartItemId')
-    async deleteListEntry(
+    async deleteCartItem(
         @Param('cartItemId') cartItemId: string,
     ): Promise<OkDTO> {
         await this.cartService.removeCartItem(cartItemId);

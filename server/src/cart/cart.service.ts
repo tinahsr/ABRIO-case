@@ -65,12 +65,12 @@ export class CartService {
     /**
      * Updates the amount of the product in the cart.
      *
-     * @param productId - the ID of the product to be added
+     * @param itemId - the ID of the item to be updated
      * @param newCount - new Count of the item
      */
-    async updateCartItem(productId: string, newCount: number) {
+    async updateCartItem(itemId: string, newCount: number) {
         const cartItem = await this.cartRepository.findOne({
-            where: {product: {id: productId}},
+            where: { id: itemId  },
             relations: ['product'],
         });
         if (!cartItem) throw new NotFoundException(`Product not in cart.`);
@@ -93,11 +93,11 @@ export class CartService {
     /**
      * Removes a product from the cart.
      *
-     * @param productId - the ID of the product to be added
+     * @param itemId - cart item ID to be removed
      */
-    async removeCartItem(productId: string) {
+    async removeCartItem(itemId: string) {
         const cartItem = await this.cartRepository.findOne({
-            where: { product: { id: productId } },
+            where: { id: itemId  },
             relations: ['product'],
         });
         if (!cartItem) throw new NotFoundException(`Product not in cart.`);

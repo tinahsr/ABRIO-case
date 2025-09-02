@@ -7,10 +7,10 @@ export interface GetProductDTO {
   id: string;
   name: string;
   price: number;
-  categories?: string[];
-  color?: number;
-  inventory?: string;
-  picture?: string;
+  categories: string[];
+  color: number;
+  inventory: number;
+  picture: string;
 }
 
 export interface FilterDTO {
