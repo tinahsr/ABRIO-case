@@ -2,8 +2,6 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Patch, Post} from '@nestjs/common';
 import {CartService} from "./cart.service";
 import {GetCartDTO} from "./DTO/GetCartDTO";
-import {CartDB} from "../../database/CartDB";
-import {ProductController} from "../product/product.controller";
 import {OkDTO} from "../serverDTO/OkDTO";
 import {transformCartDBtoGetCartDTO} from "../utils/utils";
 import {EditCartDTO} from "./DTO/EditCartDTO";

@@ -7,6 +7,7 @@ import {ProductDB} from "../database/ProductDB";
 import {CartDB} from "../database/CartDB";
 import {CartController} from "./cart/cart.controller";
 import {CartService} from "./cart/cart.service";
+import {InitSeeder} from "../database/seeder";
 
 
 @Module({
@@ -33,7 +34,8 @@ import {CartService} from "./cart/cart.service";
     ],
     providers: [
         ProductService,
-        CartService
+        CartService,
+        InitSeeder
     ],
 })
 
