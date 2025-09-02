@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {catchError, Observable, of} from 'rxjs';
 import {ApiConfigService} from './api-config.service';
 
 export interface GetProductDTO {
@@ -49,14 +49,20 @@ export class ProductService {
         }
       });
     }
-    return this.http.get<GetProductDTO[]>(`${this.apiUrl}/all`, { params });
+    return this.http.get<GetProductDTO[]>(`${this.apiUrl}/all`, { params }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error fetching products:', error);
+
+        return of([]);
+      })
+    );
   }
 
-  getProductImage(image: string): string {
+  getProductImage(image: string | undefined): string {
     const value = image == '' ? '' : image;
     if (image == 'empty.png') {
       return `/images/img.png`;
     }
-    return `${this.apiUrl}product/productPicture/${value}`;
+    return `${this.apiUrl}/productPicture/${value}`;
   }
 }

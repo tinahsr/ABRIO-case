@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {GetProductDTO} from '../../api/product.service';
+import {GetProductDTO, ProductService} from '../../api/product.service';
 
 @Component({
   selector: 'product-card',
@@ -13,6 +13,7 @@ export class ProductCardComponent  {
   @Input() product!: GetProductDTO;
 
   constructor(
+    protected productService: ProductService,
   ) {}
 
 }

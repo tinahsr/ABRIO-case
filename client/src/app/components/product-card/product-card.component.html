@@ -1,5 +1,9 @@
 <div class="card" style="width: 18rem;">
-  <img src="img.png" class="card-img-top" alt="...">
+  <img
+    [src]="productService.getProductImage(product.picture)"
+    class="card-img-top product-image"
+    alt="productImage"
+  />
   <div class="card-body py-2">
     <h5 class="card-title mb-0">{{ product.name }}</h5>
   </div>
