@@ -10,10 +10,15 @@ import {CartService} from "./cart/cart.service";
 import {InitSeeder} from "../database/seeder";
 import {CategoryService} from "./category/category.service";
 import {CategoryController} from "./category/category.controller";
+import {join} from "path";
+import {ServeStaticModule} from "@nestjs/serve-static";
 
 
 @Module({
     imports: [
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', '..', '..', 'client', 'dist', 'client', 'browser'),
+        }),
         TypeOrmModule.forRoot({
             type: 'sqlite',
             database: './db.sqlite',
