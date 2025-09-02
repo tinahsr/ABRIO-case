@@ -2,3 +2,13 @@ h2 {
   font-size: 1.8em;
   color: #1c3f5f;
 }
+
+.cart {
+  background-color: white;
+}
+
+.line {
+  border: none;
+  border-top: 5px solid #1c3f5f;
+  margin: 20px 0;
+}

@@ -5,7 +5,7 @@
   @if (products$ | async; as products) {
     @for (product of products; track $index) {
       <div
-        class="justify-content-center col mb-3 md:px-3">
+        class="justify-content-center col-md-4 col mb-3">
         <product-card [product]="product" />
       </div>
     }
