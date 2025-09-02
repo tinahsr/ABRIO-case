@@ -30,7 +30,6 @@ export enum SortOrder {
 export class ProductService {
   private readonly apiUrl: string;
 
-
   constructor(private http: HttpClient, config: ApiConfigService) {
     this.apiUrl = `${config.getBaseUrl()}/product`;
   }
@@ -50,7 +49,6 @@ export class ProductService {
         }
       });
     }
-
     return this.http.get<GetProductDTO[]>(`${this.apiUrl}/all`, { params });
   }
 

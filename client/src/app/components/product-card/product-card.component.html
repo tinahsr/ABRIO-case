@@ -1,11 +1,12 @@
 <div class="card" style="width: 18rem;">
   <img src="img.png" class="card-img-top" alt="...">
   <div class="card-body py-2">
-    <h5 class="card-title mb-0">T-Shirt</h5>
+    <h5 class="card-title mb-0">{{ product.name }}</h5>
   </div>
   <ul class="list-group list-group-flush">
-    <li class="list-group-item">Anzahl: 54</li>
-    <li class="list-group-item">0,00€</li>
+    <li class="list-group-item">Anzahl: {{ product.inventory }}
+    </li>
+    <li class="list-group-item"> {{ product.price }} €</li>
   </ul>
   <div class="card-body">
     <button type="button" class="btn btn-primary">Add to Cart</button>
