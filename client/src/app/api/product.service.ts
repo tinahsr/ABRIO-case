@@ -8,12 +8,20 @@ export interface GetProductDTO {
   name: string;
   price: number;
   categories?: string[];
-  colors?: string[];
+  color?: number;
+  inventory?: string;
+  picture?: string;
 }
 
 export interface FilterDTO {
   categories?: string[] | string;
   colors?: string[] | string;
+  sortOrder?: SortOrder;
+}
+
+export enum SortOrder {
+  priceASC = 'priceASC',
+  priceDESC = 'priceDESC',
 }
 
 @Injectable({
@@ -21,6 +29,7 @@ export interface FilterDTO {
 })
 export class ProductService {
   private readonly apiUrl: string;
+
 
   constructor(private http: HttpClient, config: ApiConfigService) {
     this.apiUrl = `${config.getBaseUrl()}/product`;
@@ -42,13 +51,14 @@ export class ProductService {
       });
     }
 
-    return this.http.get<GetProductDTO[]>(`${this.apiUrl}/allProducts`, { params });
+    return this.http.get<GetProductDTO[]>(`${this.apiUrl}/all`, { params });
   }
 
-
-  getProductPicture(image: string): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/productPicture/${image}`, {
-      responseType: 'blob'
-    });
+  getProductImage(image: string): string {
+    const value = image == '' ? '' : image;
+    if (image == 'empty.png') {
+      return `/images/img.png`;
+    }
+    return `${this.apiUrl}product/productPicture/${value}`;
   }
 }

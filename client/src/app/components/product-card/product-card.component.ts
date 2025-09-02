@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {GetProductDTO} from '../../api/product.service';
 
 @Component({
   selector: 'product-card',
@@ -8,6 +9,8 @@ import {Component, OnInit} from '@angular/core';
   ],
 })
 export class ProductCardComponent  {
+
+  @Input() product!: GetProductDTO;
 
   constructor(
   ) {}

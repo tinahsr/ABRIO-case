@@ -21,7 +21,7 @@ export class ProductController {
         description:
             'A list of all products',
     })
-    @Get('/allProducts')
+    @Get('/all')
     async getProducts(
         @Query() query: FilterDTO,
     ): Promise<GetProductDTO[]> {
