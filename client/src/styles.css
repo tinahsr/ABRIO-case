@@ -18,3 +18,14 @@ h2 {
   object-fit: cover;
   object-position: center;
 }
+
+.productCard {
+  background-color: #1c3f5f;
+}
+
+.button-cards {
+  background-color: #1c3f5f;
+  color: white;
+  border: none;
+  padding: 6px;
+}
