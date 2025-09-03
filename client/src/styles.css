@@ -12,6 +12,11 @@ h2 {
   border-top: 5px solid #1c3f5f;
 }
 
+.cartButton {
+  border: solid 1px #1c3f5f;
+  background-color: white;
+}
+
 .product-image {
   width: 100%;
   height: 300px;
@@ -39,6 +44,32 @@ h2 {
 
 .big-checkbox {
   transform: scale(1.3);
+
+}
+
+input[type="checkbox"].form-check-input {
+  accent-color: #1c3f5f;
+  border-radius: 0;
+}
+
+input[type="checkbox"].form-check-input:checked {
+  background-color: #1c3f5f;
+  border-color: #1c3f5f;
+}
+
+.form-select {
+  color: #1c3f5f;
+  border-radius: 0;
+}
+
+.form-select option:hover {
+  background-color: #e6ffe6;
+  color: #1c3f5f;
+}
+
+.form-select:hover {
+  border-color: #1c3f5f;
+  outline: none;
 }
 
 .alert-container {
