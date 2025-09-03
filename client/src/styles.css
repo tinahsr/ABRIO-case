@@ -19,6 +19,13 @@ h2 {
   object-position: center;
 }
 
+.product-image-cart {
+  width: 40%;
+  height: 70px;
+  object-fit: cover;
+  object-position: center;
+}
+
 .productCard {
   background-color: #1c3f5f;
 }
@@ -28,4 +35,8 @@ h2 {
   color: white;
   border: none;
   padding: 6px;
+}
+
+.big-checkbox {
+  transform: scale(1.3);
 }

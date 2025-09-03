@@ -20,8 +20,8 @@ export class FilterDTO {
     sortOrder?: SortOrder;
 
     @ApiPropertyOptional({
-        description: 'Filter products by category IDs',
-        example: [1, 2, 3],
+        description: 'Filter products by category names',
+        example: ['Sport'],
     })
     @IsOptional()
     @IsArray()

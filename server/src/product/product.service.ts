@@ -23,7 +23,7 @@ export class ProductService {
             .leftJoinAndSelect('product.categories', 'category');
 
         if (filter.categories?.length) {
-            query.andWhere('category.id IN (:...categories)', { categories: filter.categories });
+            query.andWhere('category.name IN (:...categories)', { categories: filter.categories });
         }
 
         if (filter.colors?.length) {

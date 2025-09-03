@@ -45,13 +45,7 @@ export class CartService {
   }
 
   deleteCartItem(cartItemId: string): Observable<OkDTO> {
-    return this.http.delete<OkDTO>(`${this.apiUrl}/${cartItemId}`).pipe(
-      tap(response => console.log('Deleted:', response)),
-      catchError(err => {
-        console.error('Delete failed', err);
-        return throwError(() => err);
-      })
-    );
+    return this.http.delete<OkDTO>(`${this.apiUrl}/${cartItemId}`);
   }
 
   getTotalPrice(cartItems: GetCartDTO[]): number {
