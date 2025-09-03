@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+import {computed, Injectable, signal} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {catchError, map, Observable, tap, throwError} from 'rxjs';
 import {ApiConfigService} from './api-config.service';
 import {GetProductDTO} from './product.service';
 
@@ -26,29 +25,42 @@ export interface OkDTO {
 export class CartService {
 
   private readonly apiUrl: string;
+  cart = signal<GetCartDTO[]>([]);
+  totalPrice = computed(() =>
+    this.cart().reduce((sum, item) => sum + item.product.price * item.count, 0)
+  );
 
   constructor(private http: HttpClient, config: ApiConfigService) {
     this.apiUrl = `${config.getBaseUrl()}/cart`;
   }
 
-  getCart(): Observable<GetCartDTO[]> {
-    return this.http.get<GetCartDTO[]>(`${this.apiUrl}/all`);
-
+  fetchCart() {
+    this.http.get<GetCartDTO[]>(`${this.apiUrl}/all`).subscribe((items) => {
+      this.cart.set(items);
+    });
   }
 
-  addToCart(body: EditCartDTO): Observable<OkDTO> {
-    return this.http.post<OkDTO>(this.apiUrl, body);
+  addToCart(body: EditCartDTO) {
+    this.http.post<OkDTO>(this.apiUrl, body).subscribe((res) => {
+      if (res.ok) {
+        this.fetchCart();
+      }
+    });
   }
 
-  updateCart(body: EditCartDTO): Observable<OkDTO> {
-    return this.http.patch<OkDTO>(this.apiUrl, body);
+  updateCart(body: EditCartDTO) {
+    this.http.patch<OkDTO>(this.apiUrl, body).subscribe((res) => {
+      if (res.ok) {
+        this.fetchCart();
+      }
+    });
   }
 
-  deleteCartItem(cartItemId: string): Observable<OkDTO> {
-    return this.http.delete<OkDTO>(`${this.apiUrl}/${cartItemId}`);
-  }
-
-  getTotalPrice(cartItems: GetCartDTO[]): number {
-    return cartItems.reduce((sum, item) => sum + item.product.price * item.count, 0);
+  deleteCartItem(cartItemId: string) {
+    this.http.delete<OkDTO>(`${this.apiUrl}/${cartItemId}`).subscribe((res) => {
+      if (res.ok) {
+        this.fetchCart();
+      }
+    });
   }
 }

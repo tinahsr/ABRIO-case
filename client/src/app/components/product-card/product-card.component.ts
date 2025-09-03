@@ -32,19 +32,9 @@ export class ProductCardComponent  {
       count: 1,
     };
 
-    this.cartService.addToCart(body).subscribe({
-      next: (res) => {
-        if (res.ok) {
-          product.inventory -= 1;
-          console.log('Produkt in den Warenkorb gelegt:', product.name);
-        } else {
-          alert(res.message || `Fehler beim Hinzufügen von "${product.name}" in den Warenkorb.`);
-        }
-      },
-      error: (err) => {
-        console.error('Fehler beim Hinzufügen zum Warenkorb:', err);
-        alert(`Fehler beim Hinzufügen von "${product.name}" in den Warenkorb.`);
-      },
-    });
+    this.cartService.addToCart(body);
+
+    product.inventory -= 1;
+    console.log('Produkt in den Warenkorb gelegt:', product.name);
   }
 }
