@@ -46,12 +46,11 @@ export class CartComponent implements OnInit {
         'error'
       );
       return;
-    } else if (Number(target.value) < 0) {
+    } else if (Number(target.value) > 0) {
       const body: EditCartDTO = {
         productId: item.id,
         count: Number(target.value),
       };
-
       this.cartService.updateCart(body);
     }
   }
