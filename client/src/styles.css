@@ -40,3 +40,14 @@ h2 {
 .big-checkbox {
   transform: scale(1.3);
 }
+
+.alert-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 300px;
+}

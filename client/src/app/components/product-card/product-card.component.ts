@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {GetProductDTO, ProductService} from '../../api/product.service';
 import {CartService, EditCartDTO} from '../../api/cart.service';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'product-card',
@@ -16,6 +17,7 @@ export class ProductCardComponent  {
   constructor(
     protected productService: ProductService,
     protected cartService: CartService,
+    protected alertService: AlertService,
   ) {}
 
   addToCart(product: GetProductDTO) {
@@ -23,9 +25,10 @@ export class ProductCardComponent  {
     let productInventory: number = product.inventory;
 
     if (productInventory <= 0) {
-      alert(`Es sind leider keine Exemplare von "${product.name}" mehr auf Lager.`);
+      this.alertService.show(`Es sind leider keine Exemplare von "${product.name}" mehr auf Lager.`, 'error');
       return;
-    }
+
+  }
 
     const body: EditCartDTO = {
       productId: product.id,

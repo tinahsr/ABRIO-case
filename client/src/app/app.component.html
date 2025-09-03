@@ -1,2 +1,15 @@
+<div class="alert-container">
+  @for (alert of alertService.alerts(); track $index) {
+    <div class="alert alert-dismissible fade show position-absolute"
+         [ngClass]="{
+         'alert-success': alert.type === 'success',
+         'alert-danger': alert.type === 'error',
+         'alert-info': alert.type === 'info'
+       }"
+         role="alert">
+      {{ alert.message }}
+    </div>
+  }
+</div>
 <navbar></navbar>
 <router-outlet />

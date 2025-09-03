@@ -2,6 +2,7 @@ import {computed, Injectable, signal} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {ApiConfigService} from './api-config.service';
 import {GetProductDTO} from './product.service';
+import {AlertService} from '../services/alert.service';
 
 export interface GetCartDTO {
   id: string;
@@ -30,7 +31,7 @@ export class CartService {
     this.cart().reduce((sum, item) => sum + item.product.price * item.count, 0)
   );
 
-  constructor(private http: HttpClient, config: ApiConfigService) {
+  constructor(private alertService: AlertService, private http: HttpClient, config: ApiConfigService) {
     this.apiUrl = `${config.getBaseUrl()}/cart`;
   }
 
@@ -41,26 +42,45 @@ export class CartService {
   }
 
   addToCart(body: EditCartDTO) {
-    this.http.post<OkDTO>(this.apiUrl, body).subscribe((res) => {
-      if (res.ok) {
-        this.fetchCart();
-      }
+    this.http.post<OkDTO>(this.apiUrl, body).subscribe({
+      next: (res) => {
+        if (res.ok) {
+          this.fetchCart();
+          this.alertService.show('Produkt erfolgreich in den Warenkorb gelegt!', 'success');
+        } else {
+          this.alertService.show(res.message || 'Fehler beim Hinzufügen zum Warenkorb.', 'error');
+        }
+      },
+      error: () => this.alertService.show('Netzwerkfehler beim Hinzufügen zum Warenkorb.', 'error')
     });
   }
 
+
   updateCart(body: EditCartDTO) {
-    this.http.patch<OkDTO>(this.apiUrl, body).subscribe((res) => {
-      if (res.ok) {
-        this.fetchCart();
-      }
+    this.http.patch<OkDTO>(this.apiUrl, body).subscribe({
+      next: (res) => {
+        if (res.ok) {
+          this.fetchCart();
+          this.alertService.show('Warenkorb erfolgreich aktualisiert.', 'success');
+        } else {
+          this.alertService.show(res.message || 'Fehler beim Aktualisieren des Warenkorbs.', 'error');
+        }
+      },
+      error: () => this.alertService.show('Netzwerkfehler beim Aktualisieren des Warenkorbs.', 'error')
     });
   }
 
   deleteCartItem(cartItemId: string) {
-    this.http.delete<OkDTO>(`${this.apiUrl}/${cartItemId}`).subscribe((res) => {
-      if (res.ok) {
-        this.fetchCart();
-      }
+    this.http.delete<OkDTO>(`${this.apiUrl}/${cartItemId}`).subscribe({
+      next: (res) => {
+        if (res.ok) {
+          this.fetchCart();
+          this.alertService.show('Produkt erfolgreich aus dem Warenkorb entfernt.', 'success');
+        } else {
+          this.alertService.show(res.message || 'Fehler beim Entfernen des Produkts aus dem Warenkorb.', 'error');
+        }
+      },
+      error: () => this.alertService.show('Netzwerkfehler beim Entfernen des Produkts.', 'error')
     });
   }
 }
