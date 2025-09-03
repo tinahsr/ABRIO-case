@@ -74,7 +74,7 @@ export class CartService {
           this.alertService.show(res.message || 'Fehler beim Aktualisieren des Warenkorbs.', 'error');
         }
       },
-      error: () => this.alertService.show('Netzwerkfehler beim Aktualisieren des Warenkorbs.', 'error')
+      error: () => this.alertService.show('Leider sind nicht genügend Produkte verfügbar.', 'error')
     });
   }
 

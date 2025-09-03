@@ -3,6 +3,7 @@ import {CartService, EditCartDTO, GetCartDTO} from '../../api/cart.service';
 import { DecimalPipe} from '@angular/common';
 import {ProductService} from '../../api/product.service';
 import { FormsModule} from '@angular/forms';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'cart',
@@ -18,6 +19,7 @@ export class CartComponent implements OnInit {
   constructor(
     protected cartService: CartService,
     protected productService: ProductService,
+    protected alertService: AlertService,
   ) {}
 
 
@@ -35,7 +37,16 @@ export class CartComponent implements OnInit {
 
     if (target.value.trim().length === 0 || Number(target.value) < 0) {
       this.cartService.fetchCart();
-    } else {
+    }
+    else if (Number(target.value) > item.product.inventory)
+    {
+      this.cartService.fetchCart();
+      this.alertService.show(
+        `Es sind nur ${item.product.inventory} Exemplare von "${item.product.name}" verfügbar.`,
+        'error'
+      );
+      return;
+    } else if (Number(target.value) < 0) {
       const body: EditCartDTO = {
         productId: item.id,
         count: Number(target.value),
