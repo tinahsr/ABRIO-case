@@ -31,10 +31,12 @@ export class FilterComponent implements OnInit {
 
     this.fetchCategories();
 
+    const params = this.route.snapshot.queryParams;
+
     this.form = this.fb.group({
-      categories: this.fb.control([]),
-      colors: this.fb.control([]),
-      sortOrder: this.fb.control(''),
+      categories: this.fb.control(params['categories'] ? [].concat(params['categories']) : []),
+      colors: this.fb.control(params['colors'] ? [].concat(params['colors']) : []),
+      sortOrder: this.fb.control(params['sortOrder'] || ''),
     });
 
     this.form.valueChanges.subscribe(value => {

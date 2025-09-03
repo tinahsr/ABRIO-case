@@ -1,48 +1,55 @@
 <form [formGroup]="form">
-<div class="d-flex row justify-content-center py-3 mx-2 mb-4">
-  <div class="col-md"></div>
-  <div class="col  text-center">
-    <h2 class="mx-2">KATEGORIE</h2>
-    @if (categories$ | async; as categories) {
-      @for (category of categories; track $index) {
-        <div class="form-check form-check-inline p-0 mx-3">
-          <label class="form-check-label" [for]="category.name">
-            {{ category.name }}
-          </label> <br>
-          <input
-            class="form-check-input ms-3 big-checkbox"
-            type="checkbox"
-            [id]="category.id"
-            [value]="category.name"
-            (change)="onCheckboxChange($event, 'categories')"
-          />
-        </div>
+  <div class="d-flex row justify-content-center py-3 mx-2 mb-4">
+    <div class="col-md"></div>
+    <div class="col  text-center">
+      <h2 class="mx-2">KATEGORIE</h2>
+      @if (categories$ | async; as categories) {
+        @for (category of categories; track $index) {
+          <div class="form-check form-check-inline p-0 mx-3">
+            <label class="form-check-label" [for]="category.name">
+              {{ category.name }}
+            </label> <br>
+            <input
+              class="form-check-input ms-3 big-checkbox"
+              type="checkbox"
+              [id]="category.id"
+              [value]="category.name"
+              [checked]="(form.get('categories')?.value ?? []).includes(category.name)"
+              (change)="onCheckboxChange($event, 'categories')"
+            />
+          </div>
+        }
       }
-    }
-  </div>
-  <div class="col text-center">
-    <h2>FARBEN</h2>
-    <div class="form-check form-check-inline">
-      <label class="form-check-label" for="inlineCheckbox1">Rot</label> <br>
-      <input class="form-check-input ms-1 big-checkbox" type="checkbox" id="inlineCheckbox1" value="1"  (change)="onCheckboxChange($event, 'colors')">
     </div>
-    <div class="form-check form-check-inline">
-      <label class="form-check-label" for="inlineCheckbox2">Blau</label> <br>
-      <input class="form-check-input ms-1 big-checkbox" type="checkbox" id="inlineCheckbox2" value="2"  (change)="onCheckboxChange($event, 'colors')">
+    <div class="col text-center">
+      <h2>FARBEN</h2>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label" for="inlineCheckbox1">Rot</label> <br>
+        <input class="form-check-input ms-1 big-checkbox" type="checkbox" id="inlineCheckbox1" value="1"
+               [checked]="(form.get('colors')?.value ?? []).includes('1')"
+               (change)="onCheckboxChange($event, 'colors')">
+      </div>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label" for="inlineCheckbox2">Blau</label> <br>
+        <input class="form-check-input ms-1 big-checkbox" type="checkbox" id="inlineCheckbox2" value="2"
+               [checked]="(form.get('colors')?.value ?? []).includes('2')"
+               (change)="onCheckboxChange($event, 'colors')">
+      </div>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label" for="inlineCheckbox3">Grün</label> <br>
+        <input class="form-check-input ms-1 big-checkbox" type="checkbox" id="inlineCheckbox3" value="3"
+               [checked]="(form.get('colors')?.value ?? []).includes('3')"
+               (change)="onCheckboxChange($event, 'colors')">
+      </div>
     </div>
-    <div class="form-check form-check-inline">
-      <label class="form-check-label" for="inlineCheckbox3">Grün</label> <br>
-      <input class="form-check-input ms-1 big-checkbox" type="checkbox" id="inlineCheckbox3" value="3"  (change)="onCheckboxChange($event, 'colors')">
+    <div class="col  text-center">
+      <h2>SORTIEREN</h2>
+      <select class="form-select mt-3" formControlName="sortOrder" aria-label="Default select example">
+        <option selected>-</option>
+        <option value="priceASC">Preis aufsteigend</option>
+        <option value="priceDESC">Preis absteigend</option>
+      </select>
     </div>
+    <div class="col-md"></div>
   </div>
-  <div class="col  text-center">
-    <h2>SORTIEREN</h2>
-    <select class="form-select mt-3" formControlName="sortOrder" aria-label="Default select example">
-      <option selected>-</option>
-      <option value="priceASC">Preis aufsteigend</option>
-      <option value="priceDESC">Preis absteigend</option>
-    </select>
-  </div>
-  <div class="col-md"></div>
-</div>
 </form>
