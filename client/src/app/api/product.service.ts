@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
-import {catchError, Observable, of} from 'rxjs';
 import {ApiConfigService} from './api-config.service';
 
 export interface GetProductDTO {
@@ -29,12 +28,13 @@ export enum SortOrder {
 })
 export class ProductService {
   private readonly apiUrl: string;
+  products = signal<GetProductDTO[]>([]);
 
   constructor(private http: HttpClient, config: ApiConfigService) {
     this.apiUrl = `${config.getBaseUrl()}/product`;
   }
 
-  getProducts(filter?: FilterDTO): Observable<GetProductDTO[]> {
+  getProducts(filter?: FilterDTO): void {
     let params = new HttpParams();
 
     if (filter) {
@@ -49,13 +49,16 @@ export class ProductService {
         }
       });
     }
-    return this.http.get<GetProductDTO[]>(`${this.apiUrl}/all`, { params }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error fetching products:', error);
 
-        return of([]);
-      })
-    );
+    this.http.get<GetProductDTO[]>(`${this.apiUrl}/all`, { params }).subscribe({
+      next: (data) => {
+        this.products.set(data);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Error fetching products:', error);
+        this.products.set([]);
+      }
+    });
   }
 
   getProductImage(image: string | undefined): string {

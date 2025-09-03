@@ -37,7 +37,6 @@ export class ProductCardComponent  {
 
     this.cartService.addToCart(body);
 
-    product.inventory -= 1;
     console.log('Produkt in den Warenkorb gelegt:', product.name);
   }
 }

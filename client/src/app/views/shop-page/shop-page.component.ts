@@ -15,28 +15,24 @@ import {ActivatedRoute, Params} from '@angular/router';
     ProductCardComponent,
     FilterComponent,
     CartComponent,
-    AsyncPipe
   ],
 })
 export class ShopPageComponent implements OnInit {
 
-  products$!: Observable<GetProductDTO[]>;
-
   constructor(
-    private productService: ProductService,
+    protected productService: ProductService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-
-    this.products$ = this.route.queryParams.pipe(
-      map(params => this.mapQueryParamsToFilter(params)),
-      switchMap(filter => this.productService.getProducts(filter))
-    );
-  }
-
-  fetchProducts(): void {
-    this.products$ = this.productService.getProducts()
+    this.route.queryParams
+      .pipe(
+        tap(params => {
+          const filter = this.mapQueryParamsToFilter(params);
+          this.productService.getProducts(filter);
+        })
+      )
+      .subscribe();
   }
 
   private mapQueryParamsToFilter(params: Params): FilterDTO {

@@ -56,8 +56,8 @@
                     class="product-image-cart ms-5 d-md-block"
                     alt="productImage"
                   /></td>
-                  <th scope="row">{{ item.product.name }}</th>
-                  <td>
+                  <th class="align-middle" scope="row">{{ item.product.name }}</th>
+                  <td class="align-middle">
                     <input
                       type="number"
                       name="quantity-{{item.id}}"
@@ -68,8 +68,8 @@
                       (blur)="updateItemCount(item, $event)"
                     />
                   </td>
-                  <td>{{ (item.count * item.product.price) | number:'1.2-2' }}€</td>
-                  <td>
+                  <td class="align-middle">{{ (item.count * item.product.price) | number:'1.2-2' }}€</td>
+                  <td class="align-middle">
                     <button type="button" class="btn" (click)="removeFromCart(item.id)">
                       <i class="bi bi-trash"></i>
                     </button>

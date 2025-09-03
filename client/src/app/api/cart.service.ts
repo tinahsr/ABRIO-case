@@ -1,7 +1,7 @@
 import {computed, Injectable, signal} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {ApiConfigService} from './api-config.service';
-import {GetProductDTO} from './product.service';
+import {GetProductDTO, ProductService} from './product.service';
 import {AlertService} from '../services/alert.service';
 
 export interface GetCartDTO {
@@ -31,7 +31,7 @@ export class CartService {
     this.cart().reduce((sum, item) => sum + item.product.price * item.count, 0)
   );
 
-  constructor(private alertService: AlertService, private http: HttpClient, config: ApiConfigService) {
+  constructor(private alertService: AlertService, private http: HttpClient, config: ApiConfigService, private productService: ProductService) {
     this.apiUrl = `${config.getBaseUrl()}/cart`;
   }
 
@@ -46,6 +46,13 @@ export class CartService {
       next: (res) => {
         if (res.ok) {
           this.fetchCart();
+
+          this.productService.products.update(products =>
+            products.map(p =>
+              p.id === body.productId ? { ...p, inventory: p.inventory - 1 } : p
+            )
+          );
+
           this.alertService.show('Produkt erfolgreich in den Warenkorb gelegt!', 'success');
         } else {
           this.alertService.show(res.message || 'Fehler beim Hinzufügen zum Warenkorb.', 'error');
@@ -61,6 +68,7 @@ export class CartService {
       next: (res) => {
         if (res.ok) {
           this.fetchCart();
+          this.productService.getProducts();
           this.alertService.show('Warenkorb erfolgreich aktualisiert.', 'success');
         } else {
           this.alertService.show(res.message || 'Fehler beim Aktualisieren des Warenkorbs.', 'error');
@@ -75,6 +83,7 @@ export class CartService {
       next: (res) => {
         if (res.ok) {
           this.fetchCart();
+          this.productService.getProducts();
           this.alertService.show('Produkt erfolgreich aus dem Warenkorb entfernt.', 'success');
         } else {
           this.alertService.show(res.message || 'Fehler beim Entfernen des Produkts aus dem Warenkorb.', 'error');

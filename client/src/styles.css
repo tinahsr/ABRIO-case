@@ -42,6 +42,12 @@ h2 {
   padding: 6px;
 }
 
+.button-cards:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .big-checkbox {
   transform: scale(1.3);
 

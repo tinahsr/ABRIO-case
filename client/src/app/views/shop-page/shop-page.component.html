@@ -1,17 +1,17 @@
 <filters></filters>
 <div class="container-fluid">
-  <div
-    class="row justify-content-center d-flex">
+  <div class="row justify-content-center d-flex">
     <div class="col"></div>
     <div class="col-10">
       <div class="row">
-        @if (products$ | async; as products) {
-          @for (product of products; track $index) {
-            <div
-              class="justify-content-center d-flex col-lg-4 col mb-3">
-              <product-card [product]="product"/>
+        @if (productService.products().length > 0) {
+          @for (item of productService.products(); track item.id) {
+            <div class="justify-content-center d-flex col-lg-4 col mb-3">
+              <product-card [product]="item"></product-card>
             </div>
           }
+        } @else {
+        <p class="text-center">Keine Produkte gefunden.</p>
         }
       </div>
     </div>
